@@ -8,7 +8,7 @@
 % Last edited: 20180215
 
 params = attmap_eyes_globals;
-LOAD_DATA = 1;
+LOAD_DATA = 0;
 SAVE2MAT = 0;
 
 % Specify which version of the no deviant data you would like to plot
@@ -264,8 +264,9 @@ for istim = 1:length(stims)
         plotstim = params.plot_stimnames{istim,2};
         %titlestr = sprintf('Stim: %s, Probe: %s', plotstim, currdev{:});
         %title(titlestr, 'Interpreter', 'None')
-        %legend([hHit, hMiss, hND], 'Detected Deviant', 'Undetected Deviant', 'No Deviant Occured')
-        
+        if pi == 1
+            legend([hHit, hMiss, hND], 'Detected Deviant', 'Undetected Deviant', 'No Deviant Occurred', 'Location', 'NorthWest')
+        end 
         % Increment subplot counter
         pi = pi+1;
         nr = nr+1;
@@ -276,7 +277,7 @@ end %stim
 
 % Save figure to file
 fpath = params.paths.fig_path;
-print(fullfile(fpath, 'hmnd_allDevs'), '-depsc')
+%print(fullfile(fpath, 'hmnd_allDevs'), '-depsc')
 
 
 %% Save nd probe table for future use

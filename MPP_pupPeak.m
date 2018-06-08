@@ -501,7 +501,7 @@ for istim = 1:length(sim_data)
     % Plot pupil
     subplot(nstims,1, istim)
     yyaxis left
-    plot(xaxis, sim_data{istim, 2})
+    plot(xaxis, sim_data{istim, 2}, 'LineWidth', 2)
     ylabel('Pup. size (a.u.)')
     ylim([-.2 .2])
     xlabel('Time (msecs)')

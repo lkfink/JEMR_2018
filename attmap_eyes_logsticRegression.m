@@ -5,7 +5,7 @@
 % LF - edited 20180222
 
 params = attmap_eyes_globals;
-LOAD_DATA = 1;
+LOAD_DATA = 0;
 
 % Variables below must be loaded
 if LOAD_DATA
