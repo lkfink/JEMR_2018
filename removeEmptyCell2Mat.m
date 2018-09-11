@@ -1,8 +1,12 @@
+% Lauren Fink (lkfink@ucdavis.edu)
+% Janata Lab, UC Davis Center for Mind & Brain
+
 function outputMat = removeEmptyCell2Mat(inputCell) 
 % Function specific to fft data for attmap_eyes project
 % will remove any data from cell array that is not the required length
 % to shorten data, rather than remove, see shortenCell2Mat.m
 % LF -20180129
+
 
 
 % Get shortest length of all cells in input data, excluding empty

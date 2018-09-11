@@ -1,7 +1,8 @@
 % Script to create table containing peak T series (reson output) values for
 % each probed location in each stimulus
 
-% LF _20180131
+% 20180131 - Lauren Fink (lkfink@ucdavis)
+% Janata Lab, UC Davis, Center for Mind & Brain 
 
 % Load model predictions
 params = attmap_eyes_globals;

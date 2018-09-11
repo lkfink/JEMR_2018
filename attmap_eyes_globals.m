@@ -4,6 +4,8 @@ function globals = attmap_eyes_globals
 % parameters for attmap_eyes experiment
 %
 % 29May2015 - adapted from attmap_globals
+% - Lauren Fink (lkfink@ucdavis)
+% Janata Lab, UC Davis, Center for Mind & Brain 
 
 globals.experiment_name = 'attmap_v1p2_eyetrack';
 
@@ -22,7 +24,7 @@ globals.paths.fig_path = fullfile(globals.paths.project_root,'figures');
 globals.paths.matpath = fullfile(globals.paths.project_root,'matfiles');
 globals.paths.vdc_stim_path = '/data1/stimuli/audio/vdc/'; 
 globals.paths.maxdata_path = fullfile(globals.paths.project_root,'MaxOutput'); %changed this
-globals.paths.stim_path = '/data0/stimuli/audio/attmap';
+globals.paths.stim_path = '/data2/stimuli/audio/attmap/attmap_v1p2/prospective_stims/trimmed_full_pattern';
 globals.paths.stim_rp_plotPath = fullfile(globals.paths.fig_path,'stim_rp');
 globals.paths.rp_behave_plotPath = fullfile(globals.paths.fig_path,'rp_behave');
 globals.paths.expanded_stim_path = fullfile(globals.paths.stim_path,'rp_expanded');

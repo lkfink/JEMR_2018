@@ -1,6 +1,5 @@
-% Lauren Fink
-% lkfink@ucdavis.edu
-% UC Davis Center for Mind & Brain
+% Lauren Fink (lkfink@ucdavis.edu)
+% Janata Lab, UC Davis Center for Mind & Brain
 % 20170719
 
 % LF -20180122 - revised for general purposes
@@ -52,7 +51,7 @@ for iNaN = 1:length(NaN_idxs)
     cleanEnd = currNaN+nsamps;
     if cleanStart <= 0 % outside of range
         continue % to next NaN idx
-    elseif cleanEnd >= run_endIdx-nsamps;
+    elseif cleanEnd >= run_endIdx-nsamps
         break
     else
         data(cleanStart:cleanEnd) = NaN;

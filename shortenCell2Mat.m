@@ -1,3 +1,6 @@
+% Lauren Fink (lkfink@ucdavis.edu)
+% Janata Lab, UC Davis Center for Mind & Brain
+
 function outputMat = shortenCell2Mat(inputCell) 
 % LF - 20180202
 % Quick function to make all rows of cell array the same size by removing

@@ -1,4 +1,7 @@
-% TODO add header etc.
+% Function to average power spectra across subjects
+
+% Lauren Fink (lkfink@ucdavis)
+% Janata Lab, UC Davis, Center for Mind & Brain 
 
 function [outFFT, power, fVals] = meanFFT(inputdata, fs)
 

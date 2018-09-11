@@ -1,6 +1,5 @@
 % Lauren Fink
-% Center for Mind & Brain
-% University of California, Davis
+% Janata Lab, UC Davis Center for Mind & Brain
 % First created: 20180123
 % Last edited: 20180123
 

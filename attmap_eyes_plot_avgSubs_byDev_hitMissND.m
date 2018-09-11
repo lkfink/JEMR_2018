@@ -3,8 +3,7 @@
 % hit, miss, and no dev pupil traces, time-locked to deviant onset
 
 % Lauren Fink
-% Janata Lab
-% UC Davis Center for Mind & Brain
+% Janata Lab, UC Davis Center for Mind & Brain
 % Last edited: 20180215
 
 params = attmap_eyes_globals;

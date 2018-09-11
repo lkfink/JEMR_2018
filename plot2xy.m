@@ -1,3 +1,7 @@
+% Make plot with 2 x and y axes
+% Lauren Fink (lkfink@ucdavis.edu)
+% Janata Lab, UC Davis Center for Mind & Brain
+
 function h = plot2xy(y1,y2)
 
 % Plot x1, y1 in red

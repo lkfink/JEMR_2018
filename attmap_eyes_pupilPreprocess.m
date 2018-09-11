@@ -1,5 +1,5 @@
 % Unified pre-processing script for attmap_eyetrack
-% Lauren Fink, Janata Lab, UC Davis
+% Lauren Fink, Janata Lab, UC Davis Center for Mind & Brain 
 % Last edited: 20180206
 
 % -----------------------------------------------------------------------------%
@@ -620,10 +620,7 @@ for istim = 1:length(stims)
     end % probe
 end %stim
 fprintf('\nDone adding reson output to table\n')
-% -----------------------------------------------------------------------------%
 
-%% TODO - could also append peak Tseries for each stim?
-% Or keep that in more condensed table?
 
 % -----------------------------------------------------------------------------%
 %% Save table

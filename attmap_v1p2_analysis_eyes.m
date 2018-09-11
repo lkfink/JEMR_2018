@@ -1,7 +1,8 @@
 % analysis job stack for attmap_v1p2 eyetrack experiment
 % modeled after attmap_v1p2_analyses - May 1, 2015  BH
 % June 15, 2015 LF
-% edited Oct. 21, 2015 LF
+% edited Oct. 21, 2015 - Lauren Fink (lkfink@ucdavis)
+% Janata Lab, UC Davis, Center for Mind & Brain 
 
 globals = attmap_eyes_globals;
 addpath /Users/finklk/svn/private/matlab/projects/attmap/attmap_v1p2

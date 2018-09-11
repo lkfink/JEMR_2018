@@ -1,4 +1,7 @@
 % MPP - pup peak freq analysis
+% Lauren Fink (lkfink@ucdavis)
+% Janata Lab, UC Davis Center for Mind & Brain
+
 % 20171206 - LF started
 % 20180139 - LF edited
 
@@ -14,6 +17,9 @@ fstub = 'loopTable2.mat';
 load(fullfile(fpath, fstub))
 
 fstub = 'attmap_v1p2_stim_rp_analysis.mat';
+load(fullfile(fpath, fstub))
+
+fstub = 'MPP_pup.mat';
 load(fullfile(fpath, fstub))
 
 
@@ -380,8 +386,12 @@ for istim = 1:nstims
     % Plot pupil
     subplot(nstims, 1, istim)
     yyaxis left
-    %     plot(rp.fVals_epoch{istim},log10(rp.power_epoch{istim}),'k','LineWidth',2);
-    plot(rp.fVals_epoch{stimmask},rp.power_epoch{stimmask},'k','LineWidth',2);
+    %plot(rp.fVals_epoch{istim},log10(rp.power_epoch{istim}),'k','LineWidth',2);
+    
+    
+    %plot(rp.fVals_epoch{stimmask},rp.power_epoch{stimmask},'k','LineWidth',2);
+    plot(rp.fVals_epoch{stimmask},log10(rp.power_epoch{stimmask}),'k','LineWidth',2);
+    
     %plot(rp.fVals_full{istim},rp.power_full{istim},'k','LineWidth',2);
     ax1 = gca; % current axes
     ax1.XColor = 'k';
@@ -390,8 +400,10 @@ for istim = 1:nstims
     xlabel('Frequency (Hz)')
     ylabel('Pupil PSD');
     xlim([lowestFreq highestFreq]);
+    ylim([-3 2])
     %ylim([-10 log10(30)])
-    ylim([0 30])
+    %ylim([0 30])
+    %ylim([0 1.5])
     %stimstr = strcat(rp.stim{istim}, '.wav');
     plot_stim_ind = find(strcmp(params.plot_stimnames, rp.stim{stimmask}));
     plot_stim_lab = params.plot_stimnames{plot_stim_ind,2};
@@ -401,12 +413,14 @@ for istim = 1:nstims
     
     % Plot model prediction
     yyaxis right
-    plot(rp.modelTseries_fVals{stimmask}, rp.modelTseries_power{stimmask}, 'LineWidth', 2) %, 'Parent',ax2,'Color','r');
+    %plot(rp.modelTseries_fVals{stimmask}, rp.modelTseries_power{stimmask}, 'LineWidth', 2) %, 'Parent',ax2,'Color','r');
+    plot(rp.modelTseries_fVals{stimmask}, log10(rp.modelTseries_power{stimmask}), 'LineWidth', 2) %, 'Parent',ax2,'Color','r');
     
-    %     plot(rp.resonatorFreqs{istim}, log10(rp.meanResonEnergy{istim}), 'LineWidth', 2) %, 'Parent',ax2,'Color','r');
+    %plot(rp.resonatorFreqs{istim}, log10(rp.meanResonEnergy{istim}), 'LineWidth', 2) %, 'Parent',ax2,'Color','r');
     %     plot(rp.resonatorFreqs{istim}, rp.meanResonEnergy{istim}, 'LineWidth', 2) %, 'Parent',ax2,'Color','r');
     ylabel('Model PSD')
-    ylim([0 .03])
+    ylim([-40 40])
+    %ylim([-40 0])
     %plot(rp.stdResonEnergy{istim});
     
     title(titlestr)
@@ -415,8 +429,8 @@ for istim = 1:nstims
     set(gca, 'FontName', 'Helvetica')
 end
 
-print('-dpsc', '-fillpage', fname)
-close all
+%print('-dpsc', '-fillpage', fname)
+%close all
 
 %% Look at one sub's pup response to each of the stims vs. model
 figure()
@@ -438,91 +452,109 @@ plot2xy(rp.modelTseries_extend{5}, pupdata.epoch_avg{5})
 
 %% Plot avg stim pup vs. model
 
-figure()
-stims = unique(rp.stim);
-nstims = length(stims);
-sim_data = cell(nstims, 3);
-for istim = 1:nstims
-    currstim = stims{istim};
-    
-    % Create masks for pupil and model data
-    stim_mask_rp = strcmp(currstim, rp.stim);
-    stim_mask_pup = strcmp(currstim, pupdata.stimulus_id);
-    
-    % Avg. pupil data
-    pup_mean = mean(shortenCell2Mat(pupdata.epoch_avg(stim_mask_pup)));
-    
-%     % Plot pupil avg. vs. model prediction
-%     subplot(nstims, 1, istim);
-%     h = plot2xy(rp.modelTseries_extend{stim_mask_rp}, pup_mean);
+% figure()
+% stims = unique(rp.stim);
+% nstims = length(stims);
+% sim_data = cell(nstims, 3);
+% for istim = 1:nstims
+%     currstim = stims{istim};
 %     
-%     stimstr = strcat(currstim, '.wav');
-%     plot_stim_ind = find(strcmp(params.plot_stimnames, stimstr));
-%     plot_stim_lab = params.plot_stimnames{plot_stim_ind,2};
-%     title(plot_stim_lab)
-    
-    % Save data to mat for future use
-    sim_data{istim, 1} = pup_mean;
-    sim_data{istim, 2} = resample(pup_mean, 100, 500);
-    sim_data{istim, 3} = rp.modelTseries_extend{stim_mask_rp};
-    
-end % stim
-
-% get all downsampled and model output cells to same length
-sizes = cellfun(@size, sim_data(:,2:3), 'UniformOutput', 0);
-sizes = cell2mat(sizes);
-lengths = unique(sizes);
-mask = logical(lengths > 1);
-lengths = lengths(mask);
-minlen = min(lengths);
-for irow = 1:length(sim_data)
-    sim_data{irow, 2} = sim_data{irow, 2}(1:minlen);
-    sim_data{irow, 3} = sim_data{irow, 3}(1:minlen);
-end
+%     % Create masks for pupil and model data
+%     stim_mask_rp = strcmp(currstim, rp.stim);
+%     stim_mask_pup = strcmp(currstim, pupdata.stimulus_id);
+%     
+%     % Avg. pupil data
+%     pup_mean = mean(shortenCell2Mat(pupdata.epoch_avg(stim_mask_pup)));
+%     
+% %     % Plot pupil avg. vs. model prediction
+% %     subplot(nstims, 1, istim);
+% %     h = plot2xy(rp.modelTseries_extend{stim_mask_rp}, pup_mean);
+% %     
+% %     stimstr = strcat(currstim, '.wav');
+% %     plot_stim_ind = find(strcmp(params.plot_stimnames, stimstr));
+% %     plot_stim_lab = params.plot_stimnames{plot_stim_ind,2};
+% %     title(plot_stim_lab)
+%     
+%     % Save data to mat for future use
+%     sim_data{istim, 1} = pup_mean;
+%     sim_data{istim, 2} = resample(pup_mean, 100, 500);
+%     sim_data{istim, 3} = rp.modelTseries_extend{stim_mask_rp};
+%     
+% end % stim
+% 
+% % get all downsampled and model output cells to same length
+% sizes = cellfun(@size, sim_data(:,2:3), 'UniformOutput', 0);
+% sizes = cell2mat(sizes);
+% lengths = unique(sizes);
+% mask = logical(lengths > 1);
+% lengths = lengths(mask);
+% minlen = min(lengths);
+% for irow = 1:length(sim_data)
+%     sim_data{irow, 2} = sim_data{irow, 2}(1:minlen);
+%     sim_data{irow, 3} = sim_data{irow, 3}(1:minlen);
+% end
 
 
 %% Make cleaner version of above plot
 % Likely JEMR fig 5
-% TODO: break out
-
-figure()
-set(gca, 'fontsize', 12)
-set(gca, 'FontName', 'Helvetica')
-
-nstims = length(sim_data);
-for istim = 1:length(sim_data)
-    
-    % Scale xaxis
-    fs = 100;
-    secs = length(sim_data{istim, 3})/fs;
-    x = 1:(fs*secs);
-    xaxis = x/fs*1000;
-    
-    % Plot pupil
-    subplot(nstims,1, istim)
-    yyaxis left
-    plot(xaxis, sim_data{istim, 2}, 'LineWidth', 2)
-    ylabel('Pup. size (a.u.)')
-    ylim([-.2 .2])
-    xlabel('Time (msecs)')
-    
-    % Plot model
-    yyaxis right
-    plot(xaxis, sim_data{istim, 3})
-    ylabel('Mean reson output')
-    
-    
-    
-    title(params.plot_stimnames{istim,2});
-    set(gca, 'fontsize', 12)
-    set(gca, 'FontName', 'Helvetica')
-    
-end
-
-
-
-fname = fullfile(params.paths.fig_path, 'pupModTseries.ps');
-print('-dpsc', '-fillpage', fname)
+% TODO: break out - done 20180816
+% 
+% % Load HRF for convolution with model output
+% % Compute Hooks & Levelt PRF with McCloy adaptation
+% % set arbitrary (?) t-scale
+% Fs = 100;
+% tscale = 0:1000/Fs:2500; %should be specified in ms
+% tmax = 512; % latency of response maximum
+% n = 10.1; % shape parameter of Erlang gamma dist. (proposed to be number of
+% % signaling steps in neural pathway transmitting attentional pulse to pupil
+% PRF = tscale.^n .* exp(1).^(-10.1*tscale/930)/tmax^10.1; % expect maximal resp at 930ms
+% PRF(end) = 0;
+% 
+% 
+% figure()
+% set(gca, 'fontsize', 12)
+% set(gca, 'FontName', 'Helvetica')
+% 
+% nstims = length(sim_data);
+% for istim = 1:length(sim_data)
+%     
+%     % Scale xaxis
+%     fs = 100;
+%     secs = length(sim_data{istim, 3})/fs;
+%     x = 1:(fs*secs);
+%     xaxis = x/fs*1000;
+%     
+%     % Plot pupil
+%     subplot(nstims,1, istim)
+%     yyaxis left
+%     plot(xaxis, sim_data{istim, 2}, 'k', 'LineWidth', 2)
+%     %ylabel('Pup. size (a.u.)')
+%     ylim([-.2 .2])
+%     %xlabel('Time (msecs)')
+%     ax1 = gca;
+%     ax1.XColor = 'k';
+%     ax1.YColor = 'k';
+%     
+%     % Plot model
+%     yyaxis right
+%     %plot(xaxis, sim_data{istim, 3})
+%     y = conv(sim_data{istim, 3},PRF, 'same');
+%     plot(xaxis, y, 'Linewidth', 2)
+%     %ylabel('Mean reson output')
+%     ylim([-.4 .4])
+%     
+%     
+%     title(params.plot_stimnames{istim,2});
+%     set(gca, 'fontsize', 12)
+%     set(gca, 'FontName', 'Helvetica')
+%     
+%     
+% end
+% 
+% 
+% 
+% fname = fullfile(params.paths.fig_path, 'pupModConv_pred_noLabels.eps');
+% %print('-dpsc', '-fillpage', fname)
 
 %% Statistics for real pup vs. model, each stim
 pup_pup_dist_dtw = getSimilarity(sim_data(:,2), sim_data(:,2), 'dtw');

@@ -1,7 +1,10 @@
 % Get fft of cleaned data 
+% Lauren Fink (lkfink@ucdavis)
+% Janata Lab, UC Davis, Center for Mind & Brain 
 
-% LF - 20171206
-% LF -20180201 - added output of power and fvals
+% LF - started 20171206
+% LF - 20180201 - added output of power and fvals
+
 
 function [FFTresult, power, fVals] = getFFT(data, fs, toplot)
 
@@ -16,11 +19,12 @@ fVals=fs*(0:NFFT/2-1)/NFFT;
 power = power(1:NFFT/2);
 
 if toplot
+    figure()
     plot(fVals,power(1:NFFT/2),'k', 'LineSmoothing','on','LineWidth',2);
     title('One sided power spectral density of pupil signal');
     xlabel('Frequency (Hz)')
     ylabel('PSD');
-    xlim([0.1 3]);
+    xlim([0.1 3]); % No power in pup spectrum > 3 Hz. Don't plot high power at low freqs
     %xlim([0 3]);
     
     % Add peaks to figure
