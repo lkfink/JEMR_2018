@@ -1,5 +1,5 @@
 # JEMR_2018
-The MATLAB and R code in this repository was used to preprocess, statistically model, and plot behavioral and eye-tracking data collected in the [Geng Lab at UC Davis](http://genglab.ucdavis.edu/){:target="_blank"}. This data was published in a [Special Issue on Music & Eye-Tracking in the Journal of Eye Movement Research (JEMR)](https://bop.unibe.ch/JEMR/issue/view/793){:target="_blank"}. 
+The MATLAB and R code in this repository was used to preprocess, statistically model, and plot behavioral and eye-tracking data collected in the [Geng Lab at UC Davis](http://genglab.ucdavis.edu/){:target="_blank"}. This data was published in a [Special Issue on Music & Eye-Tracking in the Journal of Eye Movement Research (JEMR)]<a href="https://bop.unibe.ch/JEMR/issue/view/793" target="_blank">example</a>
 
 Fink, L.K., Hurley, B.K., Geng. J.J. & Janata, P. (2018). A linear oscillator model predicts dynamic temporal attention and pupillary entrainment to rhythmic musical patterns. *Journal of Eye Movement Research, 11*(2). 
 
