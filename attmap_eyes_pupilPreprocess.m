@@ -497,7 +497,8 @@ for idevtrial = 1:length(devtrials)
     submask = strcmp(pupdata.subject_id, currsub);
     currstim = loopTable2.stimulus_id(currdev);
     stimmask = strcmp(pupdata.stimulus_id, currstim);
-    currdata = pupdata.pupNorm(submask & stimmask);
+    %currdata = pupdata.pupNorm(submask & stimmask); % TODO switch this here for revision illustration
+    currdata = pupdata.pupInterp(submask & stimmask);
     currdata = cell2mat(currdata);
 
     % Now only take chunk of data we're interested in and save
@@ -514,7 +515,9 @@ for idevtrial = 1:length(devtrials)
     loopTable2.trialPupMean(currdev) = mean(basecorrected);
     maxPup = max(basecorrected);
     loopTable2.trialPupMax(currdev) = maxPup;
-    loopTable2.trialPupMaxLatency(currdev) = find(basecorrected == maxPup)*2; % to get in ms
+    %loopTable2.trialPupMaxLatency(currdev) = find(basecorrected == maxPup)*2; % to get in ms
+    % comment ^ this out for review if using interp data because at least
+    % one sub has multiple time points now at same max value
     loopTable2.trialPupSlope(currdev) = getPupSlope(basecorrected);
 
 end %devtrials

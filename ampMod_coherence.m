@@ -1,6 +1,6 @@
 % concatenated script to do coherence analyses for amp env vs model
 % 20180821 - Lauren Fink (lkfink@ucdavis)
-% Janata Lab, UC Davis, Center for Mind & Brain 
+% Janata Lab, UC Davis, Center for Mind & Brain
 
 params = attmap_eyes_globals;
 fpath = params.paths.matpath;
@@ -26,7 +26,7 @@ if LOAD_DATA
     fprintf('Finished loading: %s', fstub)
     
     % Load amp env stuff
-    fstub = 'stim_ampEnv.mat'; 
+    fstub = 'stim_ampEnv.mat';
     sprintf('Loading %s', fstub)
     load(fullfile(fpath, fstub))
     fprintf('Finished loading: %s', fstub)
@@ -308,11 +308,11 @@ fprintf('%s saved', outfname)
 
 
 %% Get peak freqs for each amp env and model prediction
-% TODO - check which peak freqs to choose? 
+% TODO - check which peak freqs to choose?
 
 mod_env_peaks = table;
 stims = params.stimnames2;
-maxFreq = 2;
+maxFreq = 3;
 minFreq = 0;
 nPeaks = 10;
 MPD = 100; % TODO CHECK not sure what this should be
@@ -382,7 +382,7 @@ badsub = 'brian2'; % can't use this data because not enough to calculate null
 badind = strcmp(badsub, subs);
 subs(badind) = [];
 cmp_tn = table;
-maxfreq = 2; % do not look at peak freqs over 2Hz because physiologically irrelevant
+maxfreq = 3; % do not look at peak freqs over 2Hz because physiologically irrelevant
 nr = 1;
 peak_conv = 1;
 
@@ -455,12 +455,13 @@ nullstd = std(avg_tn.null);
 
 
 %% Get coherence at peak freqs for model
+% R2 use this
 subs = unique(pup_mod_cohere_2.subject);
 badsub = 'brian2'; % can't use this data because not enough to calculate null
 badind = strcmp(badsub, subs);
 subs(badind) = [];
 cmp_tn = table;
-maxfreq = 2; % do not look at peak freqs over 2Hz because physiologically irrelevant
+maxfreq = 3; % do not look at peak freqs over 2Hz because physiologically irrelevant
 nr = 1;
 peak_conv = 1;
 
@@ -533,6 +534,7 @@ nullstd = std(avg_tn.null);
 
 
 %% Env v Model
+% r2 - cut
 env = load(fullfile(params.paths.matpath, 'avg_tn_env.mat'));
 env = env.avg_tn;
 mod = load(fullfile(params.paths.matpath, 'avg_tn_mod_conv.mat'));
@@ -547,7 +549,7 @@ envstd = std(env.true);
 
 
 %% Plots
-
+% r2 - cut but make avg fig below
 
 fname = fullfile(params.paths.fig_path, 'exSub_pupMod_cohere_v_20180821_conv.eps');
 %line(0:20, 0:20) % just to start off file until figure out something better
@@ -587,20 +589,20 @@ for isub = 1%:numel(subs)
         peaks = (mod_env_peaks.mod_peakFreqs_conv{stimmask_mod});
         for ipeak = 1:numel(peaks)
             h3 = plot([peaks(ipeak) peaks(ipeak)], [0 y], 'k', 'LineWidth', 1.5)
-            hold on 
+            hold on
         end
-        hold on 
+        hold on
         %plot(mod_env_peaks.env_fVals_conv{stimmask_mod}, mod_env_peaks.env_power_conv{stimmask_mod}, ':', 'Linewidth', 2)
         peaks = (mod_env_peaks.env_peakFreqs_conv{stimmask_mod});
         for ipeak = 1:numel(peaks)
             h4 = plot([peaks(ipeak) peaks(ipeak)], [0 y], ':r', 'LineWidth', 1.5)
-            hold on 
+            hold on
         end
         %ylabel('Model + Amp Env PSD')
         hold on
         
         
-                % true coherence
+        % true coherence
         if sum(compmask_t) == 1
             %yyaxis left
             h1 = plot(pup_mod_cohere_2.F{compmask_t}, pup_mod_cohere_2.true_cohere{compmask_t}, 'k', 'Linewidth', 2);
@@ -635,12 +637,128 @@ for isub = 1%:numel(subs)
         else
             continue
         end
-
+        
         
     end %stim
     %suptitle(currsub)
     
-   %print('-dpsc', '-fillpage', '-append', fname)
-   %print('-dpsc', '-fillpage', fname)
-   %close all
+    %print('-dpsc', '-fillpage', '-append', fname)
+    %print('-dpsc', '-fillpage', fname)
+    %close all
 end %sub
+
+
+
+
+
+
+
+
+%% Plot avg coherence for each stim across subs
+% use in r2
+
+fname = fullfile(params.paths.fig_path, 'avg_pupMod_cohere_v_20181025_conv.eps');
+%line(0:20, 0:20) % just to start off file until figure out something better
+%print('-dpsc', fname)
+fs = 100;
+badsub = 'brian2'; % can't use this data because not enough to calculate null
+
+% Plot true and null coherence for each sub/stim
+% include original pupil, amp env, and model spectra as well
+badind = strcmp(pup_mod_cohere_2.subject, badsub);
+pup_mod_cohere_2(badind, :) = [];
+nstims = length(params.stimnames2);
+
+figure()
+for istim = 1:length(params.stimnames2)
+    
+    currstim = params.stimnames2{istim};
+    stimmask_t = strcmp(pup_mod_cohere_2.stim, currstim);
+    compmask_t = stimmask_t;
+    stimmask_mod = strcmp(mod_env_peaks.stim, currstim);
+    
+    % Plot
+    
+    subplot(nstims, 1, istim)
+    
+    
+    %model spectrum
+    %yyaxis right
+    %plot(mod_env_peaks.mod_fVals_conv{stimmask_mod}, mod_env_peaks.mod_power_conv{stimmask_mod}, 'r', 'Linewidth', 2)
+    %ylim([0 .0007])
+    
+    
+%         y = .04;
+%         peaks = (mod_env_peaks.mod_peakFreqs_conv{stimmask_mod});
+%         for ipeak = 1:numel(peaks)
+%             h3 = plot([peaks(ipeak) peaks(ipeak)], [0 y], 'r', 'LineWidth', 1.5)
+%             hold on
+%         end
+%         hold on
+    
+    
+    % true coherence
+    %yyaxis left
+    fVals = pup_mod_cohere_2.F(compmask_t);
+    fVals = fVals{1};
+    cohdata = pup_mod_cohere_2.true_cohere(compmask_t);
+    for i =1:length(cohdata)
+       cohdata{i} = cohdata{i}'; 
+    end
+    cohdata = cell2mat(cohdata);
+    cohmean = mean(cohdata);
+    cohsem = std(cohdata) / sqrt(size(cohdata, 1));
+    h1 = plot(fVals', cohmean, 'k', 'Linewidth', 2);
+    hold on 
+    upper = cohmean+cohsem;
+    lower = cohmean-cohsem;
+    h2 = jbfill(fVals',upper,lower,'k','k',1,.5);
+    hold on
+    
+    
+    % null coherence
+    nulldata = null2.cohere;
+    for in = 1:length(nulldata)
+        nulldata{in} = nulldata{in}';
+    end
+    nulldata{8} = [];
+    nulldata = removeEmptyCell2Mat(nulldata);
+    nullmean = mean(nulldata);
+    nullsem = std(nulldata) / sqrt(size(nulldata, 1));
+    h3 = plot(fVals, nullmean, 'm', 'Linewidth', 2);
+    hold on 
+    nupper = nullmean+nullsem;
+    nlower = nullmean-nullsem;
+    h2 = jbfill(fVals',nupper,nlower,'m','m',1,.5);
+    hold on
+    
+    
+    
+    plot_stim_ind = find(strcmp(params.plot_stimnames, cellstr(currstim)));
+    plot_stim_lab = params.plot_stimnames{plot_stim_ind,2};
+    title(plot_stim_lab)
+    %title(currstim)
+    xlim([0 3])
+    ylim([0 .04])
+    %xlabel('Freq. (Hz)')
+    %ylabel('Avg. Coherence')
+    
+    % add legend to first subplot
+    if istim == 1
+        legend([h1, h3], 'True Coherence', 'Null Coherence', 'Location', 'NorthWest')
+    end
+    set(gca, 'fontsize', 12)
+    set(gca, 'FontName', 'Helvetica')
+    ax1 = gca;
+    ax1.XColor = 'k';
+    ax1.YColor = 'k';
+    
+    % print to file
+    
+    
+    
+end %stim
+
+
+print('-dpsc', '-fillpage', fname)
+%close all

@@ -109,7 +109,7 @@ end %stim
 
 
 
-
+%
 %-------------------------------------------------------------------------%
                 % Loop through all pupil data and plot
 %-------------------------------------------------------------------------%
@@ -256,7 +256,8 @@ for istim = 1:length(stims)
         hold on
         
         % Set figure properties
-        ylim([-.5,1.2]);
+        %ylim([-.5,1.2]);
+        ylim([-100 150]); % if using interp data for r2
         xlim([0 plotlim*2]);
         %xlabel('Time (msecs)')
         %ylabel('Norm. Pup Size (arb. units)')
@@ -264,7 +265,7 @@ for istim = 1:length(stims)
         %titlestr = sprintf('Stim: %s, Probe: %s', plotstim, currdev{:});
         %title(titlestr, 'Interpreter', 'None')
         if pi == 1
-            legend([hHit, hMiss, hND], 'Detected Deviant', 'Undetected Deviant', 'No Deviant Occurred', 'Location', 'NorthWest')
+            %legend([hHit, hMiss, hND], 'Detected Deviant', 'Undetected Deviant', 'No Deviant Occurred', 'Location', 'NorthWest')
         end 
         % Increment subplot counter
         pi = pi+1;

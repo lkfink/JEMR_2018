@@ -102,7 +102,7 @@ for isub = 1:length(subs)
                 
                 % find min length & fix trim all data
                 minlen = min(lens);
-                for idata = 1:numel(epochdata)
+                for idata = 1:numel( data)
                     epochdata{idata} = epochdata{idata}(1:minlen);
                 end
                 epochdata = cell2mat(epochdata);

@@ -165,10 +165,17 @@ end
 
 
 %% Other basic stats on pupil data
+subs = unique(loopTable2.subject_id);
+hitmask = logical(loopTable2.hit);
+dev_occurred = logical(~isnan(loopTable2.probe_idx));
+missmask = ~hitmask & dev_occurred;
 
 % Check if sig diff between baseline pupil size on no hit vs miss trials
 baseMeans = table;
 evokedMeans = table;
+evokedMaxes = table;
+evoLat = table;
+evoSlope = table;
 nr = 1;
 for isub = 1:length(subs)
     currsub = subs{isub};
@@ -180,6 +187,22 @@ for isub = 1:length(subs)
     evokedMeans.hit(nr,1) = nanmean(loopTable2.trialPupMean(hitmask & submask));
     evokedMeans.miss(nr,1) = nanmean(loopTable2.trialPupMean(missmask & submask));
     evokedMeans.noDev(nr,1) = nanmean(nanmean(shortenCell2Mat(loopTable2.loopPup(~missmask & ~hitmask & submask))));
+    
+    % Adding for R2
+    evokedMaxes.sub{nr,1} = currsub;
+    evokedMaxes.hit(nr,1) = nanmean(loopTable2.trialPupMax(hitmask & submask));
+    evokedMaxes.miss(nr,1) = nanmean(loopTable2.trialPupMax(missmask & submask));
+    evokedMaxes.noDev(nr,1) = max(nanmean(shortenCell2Mat(loopTable2.loopPup(~missmask & ~hitmask & submask))));
+    
+    evoLat.sub{nr,1} = currsub;
+    evoLat.hit(nr,1) = nanmean(loopTable2.trialPupMaxLatency(hitmask & submask));
+    evoLat.miss(nr,1) = nanmean(loopTable2.trialPupMaxLatency(missmask & submask));
+    % not really fair to use no dev
+    
+    evoSlope.sub{nr,1} = currsub;
+    evoSlope.hit(nr,1) = nanmean(loopTable2.trialPupSlope(hitmask & submask));
+    evoSlope.miss(nr,1) = nanmean(loopTable2.trialPupSlope(missmask & submask));
+    % not really fair to use no dev
     nr = nr+1;
     
 end % sub
@@ -189,4 +212,8 @@ end % sub
 [h,p,ci,stats] = ttest(evokedMeans.miss, evokedMeans.noDev);
 
     
+[h,p,ci,stats] = ttest(evokedMaxes.hit, evokedMaxes.miss);
+[h,p,ci,stats] = ttest(evokedMaxes.miss, evokedMaxes.noDev);
 
+[h,p,ci,stats] = ttest(evoLat.hit, evoLat.miss);
+[h,p,ci,stats] = ttest(evoSlope.hit, evoSlope.miss);

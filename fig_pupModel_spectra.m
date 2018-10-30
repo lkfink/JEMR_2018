@@ -52,18 +52,21 @@ for istim = 1:nstims
     ds = resample(pup_mean, 100, 500);
     ds = ds(1:minlen);
     psdTbl.pupDS{nr, 1} = ds;
+    %winDs = ds .* hanning(length(ds));
     [~, psdTbl.power{nr, 1}, psdTbl.fVals{nr, 1}] = getFFT(ds, 100, 0);
     
     % Add model data to table
     rp_conv = conv(rp.modelTseries_extend{stim_mask_rp}, PRF, 'same');
     rp_conv = rp_conv(1:minlen);
     psdTbl.model{nr,1} = rp_conv;
+    %winRp = rp_conv .* hanning(length(rp_conv));
     [~, psdTbl.model_power{nr,1}, psdTbl.model_fVals{nr,1}] = getFFT(rp_conv, 100, 0);
     
     % Add emp env data to table
     stimmask_env = strcmp(strcat(currstim, '.wav'), ampEnv.stim);
     env_conv = ampEnv.conv_env{stimmask_env}(1:minlen);
     psdTbl.env{nr,1} = env_conv;
+    %winEnv = env_conv .* hanning(length(env_conv));
     [~, psdTbl.env_power{nr,1}, psdTbl.env_fVals{nr,1}] = getFFT(env_conv, 100, 0);
     
     
@@ -76,7 +79,7 @@ end % stim
 plot_log = 1;
 lineWidth_pup = 1.5;
 lineWidth_mod = 1.5;
-fname = fullfile(params.paths.fig_path, 'pupMod_spectra_20180827.ps');
+fname = fullfile(params.paths.fig_path, 'pupMod_spectra_20181023.ps');
 stims = params.stimnames2;
 nstims = length(stims);
 
@@ -191,7 +194,7 @@ print('-dpsc', '-fillpage', fname)
 
 
 %% Generate figure of pupil and model time series, with AMP ENV 
-fname = fullfile(params.paths.fig_path, 'pupModEnvConv_20180828_leg.eps');
+fname = fullfile(params.paths.fig_path, 'pupModEnvConv_20181023_leg.eps');
 lineWidth_pup = 1.5;
 lineWidth_mod = 1.5;
 figure()
@@ -261,7 +264,7 @@ print('-dpsc', '-fillpage', fname)
 plot_log = 1;
 lineWidth_pup = 1.5;
 lineWidth_mod = 1.5;
-fname = fullfile(params.paths.fig_path, 'pupModEnv_spectra_20180828.ps');
+fname = fullfile(params.paths.fig_path, 'pupModEnv_spectra_20181025.ps');
 stims = params.stimnames2;
 nstims = length(stims);
 
@@ -274,16 +277,16 @@ for istim = 1:nstims
     
     % Highest req of interest
     lowestFreq = 0; 
-    highestFreq = 2;
+    highestFreq = 3;
     
     % Plot pupil
     subplot(nstims, 1, istim)
     yyaxis left
     pup_pwr = psdTbl.power{stimmask};
     if plot_log
-        plot(psdTbl.fVals{stimmask},log10(pup_pwr),'k','LineWidth',lineWidth_pup);
+        plot(psdTbl.fVals{stimmask},20*log10((pup_pwr/sum(pup_pwr))),'k','LineWidth',lineWidth_pup);
         ylabel('Pupil PSD (dB/Hz)');
-        ylim([-9 -1])
+        ylim([-150 0])
     else
         plot(psdTbl.fVals{stimmask},pup_pwr,'k','LineWidth',lineWidth_pup);
         ylabel('Pupil PSD');
@@ -301,9 +304,9 @@ for istim = 1:nstims
     yyaxis right
     model_pwr = psdTbl.model_power{stimmask};
     if plot_log
-        plot(psdTbl.model_fVals{stimmask}, log10(model_pwr), 'LineWidth', lineWidth_mod) %, 'Parent',ax2,'Color','r');
-        ylabel('Model PSD (dB/Hz)')
-        ylim([40 48])
+        plot(psdTbl.model_fVals{stimmask}, 20*log10((model_pwr/sum(model_pwr))), 'LineWidth', lineWidth_mod) %, 'Parent',ax2,'Color','r');
+        ylabel('Model PSD (dBFS)')
+        ylim([-150 0])
     else
         plot(psdTbl.model_fVals{stimmask}, model_pwr, 'LineWidth', lineWidth_mod) %, 'Parent',ax2,'Color','r');
         ylabel('Model PSD')
@@ -313,9 +316,9 @@ for istim = 1:nstims
     hold on 
     amp_pwr = psdTbl.env_power{stimmask};
     if plot_log
-        plot(psdTbl.env_fVals{stimmask_env}, log10(amp_pwr), 'LineWidth', lineWidth_mod) %, 'Parent',ax2,'Color','r');
-        ylabel('Model PSD (dB/Hz)')
-        ylim([38 48])
+        plot(psdTbl.env_fVals{stimmask_env}, 20*log10((amp_pwr/sum(amp_pwr))), 'LineWidth', lineWidth_mod) %, 'Parent',ax2,'Color','r');
+        ylabel('Model PSD (dBFS)')
+        ylim([-150 0])
     else
         plot(psdTbl.env_fVals{stimmask_env}, amp_pwr, 'LineWidth', lineWidth_mod) %, 'Parent',ax2,'Color','r');
         ylabel('Model PSD')
