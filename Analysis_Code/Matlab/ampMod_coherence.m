@@ -463,7 +463,7 @@ subs(badind) = [];
 cmp_tn = table;
 maxfreq = 3; % do not look at peak freqs over 2Hz because physiologically irrelevant
 nr = 1;
-peak_conv = 1;
+peak_conv = 0;
 
 for isub = 1:numel(subs)
     currsub = subs(isub);
@@ -479,9 +479,9 @@ for isub = 1:numel(subs)
         
         % Get peak freqs for this stim
         if peak_conv
-            peaks = mod_env_peaks.mod_peakFreqs_conv{stimmask};
+            peaks = mod_env_peaks.mod_peakFreqs_conv{stimmask_peaks};
         else
-            peaks = mod_env_peaks.mod_peakFreqs{stimmask};
+            peaks = mod_env_peaks.mod_peakFreqs{stimmask_peaks};
         end
         
         for ipeak = 1:length(peaks)
