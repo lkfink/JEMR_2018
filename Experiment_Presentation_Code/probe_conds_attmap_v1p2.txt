@@ -1,0 +1,5 @@
+prA_4_3i_1v_107bpm.wav, low_reson hi_reson low_reson hi_reson;
+prA_74_3i_1v_107bpm.wav, low_reson hi_reson low_reson hi_reson;
+prC_54_3i_1v_107bpm.wav, low_reson low_reson hi_reson hi_reson;
+prC_74_3i_1v_107bpm.wav, low_reson hi_reson low_reson hi_reson;
+prC_124_3i_1v_107bpm.wav, hi_reson low_reson hi_reson low_reson;
