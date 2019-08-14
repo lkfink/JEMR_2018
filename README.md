@@ -18,11 +18,11 @@ The MATLAB and R code in this repository was used to preprocess, statistically m
 The analysis code is presented for example purposes only and is not reproducable as is. This is because (1) some data are queried from the Janata Lab's MySQL server which requires authentication, and (2) some code relies on lab-general functions from our private Janata Lab repository. Interested readers can check out the [Janata Lab website](http://atonal.ucdavis.edu/resources/software/), which contains links to download a large percentage of our lab specific software, including the linear oscillator model discussed in the paper. 
 
 ### Dependencies
-Max/MSP 5 or later
-MATLAB 2017a 
+- Max/MSP 5 or later
+- MATLAB 2017a 
 - Signal Processing Toolbox (v. 7.4)
 - Statistics and Machine Learning Toolbox (v. 11.1)
 - Bioinformatics Toolbox (v. 4.4)
-R (v. 3.5.1)
-Ensemble (Tomic & Janata, 2007)
-Janata Lab Music Toolbox (57,71).
+- R (v. 3.5.1)
+- Ensemble (Tomic & Janata, 2007)
+- Janata Lab Music Toolbox (57,71).
